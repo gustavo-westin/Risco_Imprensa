@@ -109,6 +109,54 @@ print(f'Avalição dos títulos de notícias (12 meses):\n'
 ![image](https://github.com/gustavo-westin/Risco_Imprensa/assets/113940727/a5ad3e45-cfb9-49a5-8853-9e7ccab757b3)
 
 
+## LDA :microscope:
+Diferente da análise de sentimento, nesse método o interesse não é avaliar o valor da notícia, mas o que é a notícia. Isto é, identificar padrões textuais e agrupá-los. Isso é particularmente útil para identificar rapidamente quais são os principais temas e o que está sendo falado sobre eles, algo especialmente útil em um ambiente de análise de risco na imprensa. 
+
+Antes de entrar diretamente no LDA, é feito um trabalho de observação de recorrência, o que ajudará a validar o processo de aprendizado de máquina por comparação. Na recorrência identificamos, de forma simplificada, quais são as palavras com maior incidência no corpus textual. Isso ajuda a identificar, ainda que sem considerar a intricada relação semântica entre as palavras, o contexto geral do que está sendo dito.
+
+A primeira forma de visualização é o gráfico simples de recorrência, que após alguns ajustes para eliminar palavrás óbvias, como Sabesp, tem esse formato:
+```
+# como a palavra mais frequente será sempre a de valor buscado (sabesp) será removida
+# também será retirada as palavras "paulo" "SP" porque são atributos do Estado de prestação dos serviços
+# também a palavra sobre (preposição) que não traz significado sozinha
+most_common = freq.most_common(14)
+# exclusão de palavras
+del most_common[7]
+del most_common[5]
+del most_common[3]
+del most_common[0]
+# utilizar a lista para criar os padrões do gráfico em um loop
+words = [word for (word, freq) in most_common]
+frequencies = [freq for (word, freq) in most_common]
+# plotar um gráfico de linha com as frequências
+plt.title('Top 10 Palavras Mais Frequentes (considerando exceções)')
+plt.xlabel('Palavras')
+plt.ylabel('Frequência')
+plt.plot(words, frequencies)
+# fazer uma rotação do eixo em 45 para exibir "melhor" os rótulos
+plt.xticks(rotation=45)
+plt.show()
+```
+
+![image](https://github.com/gustavo-westin/Risco_Imprensa/assets/113940727/2f2af390-9251-4ae1-a65c-68a8ebdc51c0)
+
+Outra forma de visualizar é pela nuvem de palavras, que permite um olhar um pouco mais profundo da recorrência. 
+
+```
+# Gerar a nuvem de palavras para melhor visualização da recorrência
+
+freq = nltk.FreqDist(cleaned_tokens)
+wordcloud = WordCloud(width=800, height=800, min_font_size=10).generate_from_frequencies(freq)
+plt.figure(figsize=(8, 8), facecolor=None)
+plt.imshow(wordcloud)
+plt.axis("off")
+plt.tight_layout(pad=0)
+plt.show();
+```
+
+![Sem título](https://github.com/gustavo-westin/Risco_Imprensa/assets/113940727/e014f040-9e2d-4336-9333-82f2d3db3f41)
+
+
 
 
 
