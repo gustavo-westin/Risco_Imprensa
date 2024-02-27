@@ -2,7 +2,7 @@
 
 :droplet:@Sabesp:droplet:, 
 
-Este é um projeto embrionário para avaliação computacional de notícias de imprensa. Para isso, há análise de tokens dos títulos de notícias relacionadas a Sabesp em duas metodologias: análise de sentimento e aprendizado de máquina não supervisionado. Todas passam por pré-processamento de linguagem natural.
+Este é um projeto embrionário para avaliação computacional de notícias de imprensa. Para isso, há análise de tokens dos títulos de notícias relacionadas a Sabesp em duas metodologias: análise de sentimento e aprendizado de máquina não supervisionado em LDA. Ambas passam por pré-processamento de linguagem natural no modelo tokenização.
 
 :file_folder: Files: há dois arquivos principais, um com a análise de sentimento e outro com o modelo de LDA (Latent Dirichlet Allocation)
 
@@ -39,7 +39,32 @@ Como é comum dentro do contexto do jornalismo, releases e publicações em gran
 
 ## Limpeza e tratamento dos dados
 
-Além 
+Além da avaliação e eliminação de noticias idênticas, o principal processo de tratamento realizado é a preparação para utilização de técnicas de NLP (processamento de linguagem natural). Esse processo é dividido em dois momentos: 
+*  Transformação dos textos em corpus e documentos
+*  Atribuição de tokens para os elementos unitários que compõem os documentos
+
+De forma simplificada, o corpus é o texto corrido que será atribuido a um documento identificável, isto é, com um índice. É como se colocassemos uma chave que identificasse que qualquer trecho de uma notícia pertence a notícia 12.343, por exemplo. Isso é importante porque como as palavras ou expressões serão transformadas em unidades (tokens), é importante que deixemos um lastro para avaliar o conjunto de uma notícia.
+
+Exemplo da transformação em corpus:
+![image](https://github.com/gustavo-westin/Risco_Imprensa/assets/113940727/0086204c-e03a-4fef-b64b-ef5ceaa54b81)
+
+
+A tokenização é a divisão dos documentos em unidades semânticas, normalmente palavras, mas que preservem a classe gramatical e as relações de dependência sintática. Isso é importante porque a distância (associação) entre diferentes palavras pode trazer significados distintos: lixo comum tem significado distinto das palavras sozinhas "lixo" e "comum". Aos tokens precisam ser eliminados as chamadas "stop words", palavras sem valor semântico, como pontuação. Isso é um processo de várias rodadas e até certo ponto manual, pois é necessário entender o contexto para saber se, por exemplo, um $ tem valor semântico.
+```
+# Tokenizar o all_text
+# objetivo é criar um corpus para avaliação a partir de parâmetros
+nltk.download('punkt')
+tokens = word_tokenize(all_text)
+# Converter todas as palavras para lowercase
+# aglutina termos e evita duplicidades ou subnotificação de tokens
+tokens = [word.lower() for word in tokens]
+# Remover stopwords
+# as stopwords são palavras como preposições ou artigos que não acrescentam sentido ao texto
+nltk.download('stopwords')
+stop_words = set(stopwords.words("portuguese"))
+cleaned_tokens = [word for word in tokens if word not in stop_words]
+```
+
 
 
 
