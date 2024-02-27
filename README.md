@@ -1,14 +1,11 @@
 # Risco_Imprensa_2023
-Processamento de Linguagem Natural de títulos de notícias relacionadas a Sabesp: análise de sentimento e aprendizado de máquina não supervisionado
-
-
-![image](https://github.com/gustavo-westin/Pesquisa_Comunicao_Interna_2023/assets/113940727/ef6cde11-5877-4126-ba33-e76009cac4bb)# Pesquisa Comunição Interna 2023
 
 :droplet:@Sabesp:droplet:, 
 
-esse é o processo de **ETL** (Extract, Transform and Load) e **Análise de Dados** da Pesquisa de Comunicação Interna de 2023.
+Processamento de Linguagem Natural de títulos de notícias relacionadas a Sabesp: análise de sentimento e aprendizado de máquina não supervisionado
 
-:file_folder: Files: o arquivo principal é o Pesq_Interna_2023.ipynb, com os códigos e visualização; o arquivo PPT contém a apresentação detalhada da pesquisa e os resultados.
+:file_folder: Files: há dois arquivos principais, um com a análise de sentimento e outro com o modelo de LDA (Latent Dirichlet Allocation)
+
 
 :computer: Processo de ETL:
 *  extração dos formulários em nuvem (azure)
