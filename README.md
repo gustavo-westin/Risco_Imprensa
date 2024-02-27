@@ -2,7 +2,7 @@
 
 :droplet:@Sabesp:droplet:, 
 
-Este é um projeto embrionário para avaliação computacional de notícias de imprensa. Para isso, há análise de tokens dos títulos de notícias relacionadas a Sabesp em duas metodologias: análise de sentimento e aprendizado de máquina não supervisionado em LDA. Ambas passam por pré-processamento de linguagem natural no modelo tokenização.
+Este é um projeto embrionário para avaliação computacional de notícias de imprensa para fins de avaliação do risco de reputação. Para isso, há análise dos títulos de notícias relacionadas a Sabesp em duas metodologias: análise de sentimento e aprendizado de máquina não supervisionado em LDA. Ambas passam por pré-processamento de linguagem natural no modelo tokenização.
 
 :file_folder: Files: há dois arquivos principais, um com a análise de sentimento e outro com o modelo de LDA (Latent Dirichlet Allocation)
 
@@ -81,7 +81,33 @@ cleaned_tokens = [word for word in cleaned_tokens if word not in stop_words]
 
 Após as sucessivas etapas de limpeza, temos um corpus e tokens prontos para serem avaliados.
 
-## Análise de Sentimento
+## Análise de Sentimento :heartbeat:
+A análise de sentimento é feita por um algoritmo "SentimentIntensityAnalyzer", pertencente ao pacote de aprendizado de máquina NLTK (Natural Language Toolkit). A documentação está disponível no site da biblioteca: https://www.nltk.org/howto/sentiment.html.
+
+De forma sucinta, o algoritmo utiliza cada documento (conjunto de tokens de uma mesma notícia) e associa um rótulo de sentimento, em um score entre -1 e 1, sendo -1 o mais negativo possível e 1 o mais positivo. Isso é feito em um procedimento que avalia de forma estatística a frequência de palavras e o conjunto de seus valores semânticos. Como se trata de um modelo de aprendizado de máquina, o processo é feito de forma iterada em todos os documentos, para identificar quais grupos de palavras são maais relevantes para compossição do significado e para a pontuação de cada documento. 
+
+Veja na imagem abaixo como o processo é realizado e como cada documento recebe um valor:
+![image](https://github.com/gustavo-westin/Risco_Imprensa/assets/113940727/c62c329b-8e5c-49b7-bfce-e385195b52f8)
+
+Ao final do processo é possível contabilizar (somar) as ocorrências e verificar a distribuição.
+
+```
+# verificar qtde por sentimento e percentual relativo
+neutro = df_titulo.query('sentimento == 0').count()[0]
+neutrop = round(neutro/df_titulo.shape[0], 2)
+negativo = df_titulo.query('sentimento < 0').count()[0]
+negp = round(negativo/df_titulo.shape[0], 2)
+positivo = df_titulo.query('sentimento > 0').count()[0]
+posp = round(positivo/df_titulo.shape[0], 2)
+print(f'Avalição dos títulos de notícias (12 meses):\n'
+      f'Neutras: {neutro} ({neutrop}%)\n'
+      f'Negativas: {negativo} ({negp}%)\n'
+      f'Positivas: {positivo} ({posp}%)')
+
+```
+
+![image](https://github.com/gustavo-westin/Risco_Imprensa/assets/113940727/a5ad3e45-cfb9-49a5-8853-9e7ccab757b3)
+
 
 
 
