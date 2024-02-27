@@ -49,7 +49,9 @@ Exemplo da transformação em corpus:
 ![image](https://github.com/gustavo-westin/Risco_Imprensa/assets/113940727/0086204c-e03a-4fef-b64b-ef5ceaa54b81)
 
 
-A tokenização é a divisão dos documentos em unidades semânticas, normalmente palavras, mas que preservem a classe gramatical e as relações de dependência sintática. Isso é importante porque a distância (associação) entre diferentes palavras pode trazer significados distintos: lixo comum tem significado distinto das palavras sozinhas "lixo" e "comum". Aos tokens precisam ser eliminados as chamadas "stop words", palavras sem valor semântico, como pontuação. Isso é um processo de várias rodadas e até certo ponto manual, pois é necessário entender o contexto para saber se, por exemplo, um $ tem valor semântico.
+A **tokenização** é a divisão dos documentos em unidades semânticas, normalmente palavras, mas que preservem a classe gramatical e as relações de dependência sintática. Isso é importante porque a distância (associação) entre diferentes palavras pode trazer significados distintos: lixo comum tem significado distinto das palavras sozinhas "lixo" e "comum". 
+
+Aos tokens precisam ser eliminados as chamadas "stop words", palavras sem valor semântico, como pontuação. Isso é um processo de várias rodadas e até certo ponto manual, pois é necessário entender o contexto para saber se, por exemplo, um $ tem valor semântico.
 ```
 # Tokenizar o all_text
 # objetivo é criar um corpus para avaliação a partir de parâmetros
@@ -66,6 +68,20 @@ cleaned_tokens = [word for word in tokens if word not in stop_words]
 ```
 
 
+Resultado de uma primeira limpeza, que ainda guarda elementos sujos, como ";" e "23,2".
+![image](https://github.com/gustavo-westin/Risco_Imprensa/assets/113940727/3a1d5737-a81a-4c4d-963f-0580a87fa03a)
+
+Nova limpeza de "stop words":
+```
+# Adicionar caracteres especiais à lista de stop words
+# algumas "stopwords" precisam ser acrescentadas
+stop_words.update([",", ":", "rt","@","?","(", ")",".","!", "%"])
+cleaned_tokens = [word for word in cleaned_tokens if word not in stop_words]
+```
+
+Após as sucessivas etapas de limpeza, temos um corpus e tokens prontos para serem avaliados.
+
+## Análise de Sentimento
 
 
 
