@@ -2,13 +2,13 @@
 
 :droplet:@Sabesp:droplet:, 
 
-Processamento de Linguagem Natural de títulos de notícias relacionadas a Sabesp: análise de sentimento e aprendizado de máquina não supervisionado
+Este é um projeto embrionário para avaliação computacional de notícias de imprensa. Para isso, há análise de tokens dos títulos de notícias relacionadas a Sabesp em duas metodologias: análise de sentimento e aprendizado de máquina não supervisionado. Todas passam por pré-processamento de linguagem natural.
 
 :file_folder: Files: há dois arquivos principais, um com a análise de sentimento e outro com o modelo de LDA (Latent Dirichlet Allocation)
 
 
 :computer: Processo de ETL:
-*  extração dos formulários em nuvem (azure)
+*  extração dos dados por dois métodos: web scrapping e por processamento de texto da boxnet.
 *  transformação em csv
 *  carga em ambiente Python para manipulação (Jupyter Notebook)
 *  nova transformação para disponibilização local em xlsx com dados tratados
@@ -16,18 +16,16 @@ Processamento de Linguagem Natural de títulos de notícias relacionadas a Sabes
 
 :chart_with_upwards_trend: Processo de análise de dados:
 *  limpeza e manipulação dos dados 
-*  anáise estatística descritiva
-*  análise qualitativa
-*  análise de recorrência
+*  transformação de dados textuais em tokens
+*  manipulação com técnicas de processamento de linguagem natural
+*  aplicação das metodologias descritas
 
-:books: Bibliotecas utilizadas: numpy, pandas, matplot, spacy e wordcloud.
+:books: Bibliotecas utilizadas: numpy, pandas, matplot, spacy, wordcloud, nltk, sentiment analyzer, sklearn, pca, os, beautiful soup.
 
 # RESUMO
 Breve resumo da metodologia, aplicação e resultados. Dividido nas seguintes seções:
 
 *  Pesquisa e amostra: informações sobre a amostra e suas variáveis
 *  Limpeza e tratamento dos dados: breve exemplificação das técnicas aplicadas
-*  Análise descritiva: demonstração simplificada do emprego de técnicas estatísticas utilizados e cruzamento de variáveis
-*  análise qualitativa: emprega-se técnicas de recorrência de palavras, agrupamento (clusterização) e comparações não numéricas para avaliar o comportamento e identificar cenários
-
-Obs: o arquivo em PPT contém a apresentação completa e comentada
+*  Análise de sentimento
+*  Latent Drichlet Allocation
