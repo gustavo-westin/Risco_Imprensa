@@ -157,6 +157,20 @@ plt.show();
 ![Sem título](https://github.com/gustavo-westin/Risco_Imprensa/assets/113940727/e014f040-9e2d-4336-9333-82f2d3db3f41)
 
 
+O LDA fará uma abordagem mais complexa, pois considerará a relação entre as palavras para associá-las em grupos de acordo com a probabilidade. De forma bastante simplificada, o LDA é um modelo matemático aplicado no aprendizado de máquina *não supervisionado* que busca revelar os tópicos subjacentes do conjunto de documentos, de acordo com um parâmetro fornecido pelo usuário (quantidade de tópicos desejados).
+
+O modelo matemático é bastante complexo, pois é uma técnica generativa, que envolve cruzamentos sucessivos de escolha aleatória de tópicos para uma composição aleatória de tokens de N documentos, sendo feita sucessivas vezes. O resultado é a probabilidade de uma palavra estar associada a um determinado tópico, dada sua recorrência, e a probabilidade dela estar próxima a outra palavra deste mesmo tópico.
+
+Para o usuário, o resultado é a composição de tópicos, cujo significado é dado pelo contexto, de conhecimento do analista de negócios. Na imagem abaixo vemos o experimento para cinco tópicos, que nos revela, pelo contexto, que os tópicos principais se associam a:
+* mutirão de dívidas
+* mercado acionário
+* reclamações relacionadas a contas falsas
+* evento de fevereiro de 2023 no litoral norte
+* privatização da companhia
+
+![image](https://github.com/gustavo-westin/Risco_Imprensa/assets/113940727/8950ffca-0048-49ed-9cf6-62e7e80d23e8)
+
+
 
 
 
