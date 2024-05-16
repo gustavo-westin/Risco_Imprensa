@@ -168,6 +168,8 @@ Para o usuário, o resultado é a composição de tópicos, cujo significado é 
 
 ![image](https://github.com/gustavo-westin/Risco_Imprensa/assets/113940727/8950ffca-0048-49ed-9cf6-62e7e80d23e8)
 
+## :cop: COMO USAR:
+
 Esse documento é um panorama geral, o projeto em si pode ser visualizado de forma integral nos documentos que compôe o projeto:
 * monografia, com a base teórica, metodológica e a interpretação dos resultados
 * dois arquivos jupyter notebook, com os códigos e sua execução
