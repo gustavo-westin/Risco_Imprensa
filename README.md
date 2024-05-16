@@ -1,26 +1,25 @@
-# Risco_Imprensa_2023
+# Risco de Reputação: análise de notícias de imprensa
 
 :droplet:@Sabesp:droplet:, 
 
-Este é um projeto embrionário para avaliação computacional de notícias de imprensa para fins de avaliação do risco de reputação. Para isso, há análise dos títulos de notícias relacionadas a Sabesp em duas metodologias: análise de sentimento e aprendizado de máquina não supervisionado em LDA. Ambas passam por pré-processamento de linguagem natural no modelo tokenização.
+Este é um projeto embrionário para avaliação computacional de notícias de imprensa para fins de avaliação do risco de reputação. Para isso, há análise dos títulos de notícias relacionadas a Sabesp em duas metodologias: análise de sentimento e aprendizado e modelagem de tópicos por LDA. Ambas são modalidades de aprendizagem de máquina não superviosionado.
 
-:file_folder: Files: há dois arquivos principais, um com a análise de sentimento e outro com o modelo de LDA (Latent Dirichlet Allocation)
+:file_folder: Files: há dois arquivos principais, um com a análise de sentimento e outro com o modelo de LDA (Latent Dirichlet Allocation). Adicionalmente há também um dashboard para visualização dos tópicos. 
 
 
 :computer: Processo de ETL:
-*  extração dos dados por dois métodos: web scrapping e por processamento de texto da boxnet.
-*  transformação em csv
+*  origem dos dados: planilhas excel fornecidas por empresa de clipping
 *  carga em ambiente Python para manipulação (Jupyter Notebook)
 *  nova transformação para disponibilização local em xlsx com dados tratados
 
 
 :chart_with_upwards_trend: Processo de análise de dados:
 *  limpeza e manipulação dos dados 
-*  transformação de dados textuais em tokens
+*  transformação de dados textuais em tokens e vetorização
 *  manipulação com técnicas de processamento de linguagem natural
 *  aplicação das metodologias descritas
 
-:books: Bibliotecas utilizadas: numpy, pandas, matplot, spacy, wordcloud, nltk, sentiment analyzer, sklearn, pca, pyLDAvis, os, beautiful soup.
+:books: Bibliotecas utilizadas: numpy, pandas, matplot, spacy, wordcloud, nltk, sentiment analyzer, sklearn, pca, pyLDAvis, os, vader.
 
 # RESUMO
 Breve resumo da metodologia, aplicação e resultados dividido nas seguintes seções:
@@ -31,19 +30,19 @@ Breve resumo da metodologia, aplicação e resultados dividido nas seguintes se�
 *  Latent Drichlet Allocation
 
 ## Amostra
-Para esse teste de conceito foram utilizadas 16411 notícias entre 2022 e 2023, todas transformadas em texto, mas oriundas da TV, rádio, impresso e digital. Esse primeiro processamento é disponibilizado pela Boxnet, empresa especializada em clipping. Dessas 16 mil notícias, utilizamos o título e subtítulo, de modo a entender a dinâmica de valor atribuído para o principal fio condutor da narrativa.
+Para esse teste de conceito foram utilizadas 16.411 notícias entre 2022 e 2023, todas transformadas em texto, mas oriundas da TV, rádio, impresso e digital. Esse primeiro processamento é disponibilizado pela Boxnet, empresa especializada em clipping. Dessas 16 mil notícias, utilizamos o título e subtítulo, de modo a entender a dinâmica de valor atribuído para o principal fio condutor da narrativa.
 
-A palavra-chave para identificar a notícia é SABESP, e suas variações de denomaminação: SBSP3 e Companhia de Saneamento Básico de São Paulo. As notícias são de origem brasileira, em todo território nacional, em português. Isso é um fator importante, pois as técnicas empregadas de processamento de linguagem natural são voltadas para as relações sintáticas da lingua portuguesa. 
+A palavra-chave para identificar a notícia é SABESP, e suas variações de denomaminação: SBSP3 e Companhia de Saneamento Básico de São Paulo. As notícias são de origem diversa (rádio, TV, sites e impresso), de veículos em todo território nacional, em português.  
 
-Como é comum dentro do contexto do jornalismo, releases e publicações em grandes empresas jornalísticas acabam por reverberar, de forma integral, em portais menores a mesma notícia. Deste modo, por definição metodológica, optou-se por eliminar as notícias que reproduziam, de forma integral, o texto. Ao todo, foram eliminadas 4073 notícias, restando 12339 para análise.
+Como é comum dentro do contexto do jornalismo, releases e publicações em grandes empresas jornalísticas acabam por reverberar, de forma integral, em portais menores a mesma notícia. Deste modo, por definição metodológica, optou-se por eliminar as notícias que reproduziam, de forma integral, o texto para a aplicação de LDA: foram eliminadas 4073 notícias, restando 12339 para análise.
 
 ## Limpeza e tratamento dos dados
 
 Além da avaliação e eliminação de noticias idênticas, o principal processo de tratamento realizado é a preparação para utilização de técnicas de NLP (processamento de linguagem natural). Esse processo é dividido em dois momentos: 
-*  Transformação dos textos em corpus e documentos
-*  Atribuição de tokens para os elementos unitários que compõem os documentos
+*  Transformação dos textos em tokens, corpus e documentos
+*  Remoção de stopwords e palavras complementares
 
-De forma simplificada, o corpus é o texto corrido que será atribuido a um documento identificável, isto é, com um índice. É como se colocassemos uma chave que identificasse que qualquer trecho de uma notícia pertence a notícia 12.343, por exemplo. Isso é importante porque como as palavras ou expressões serão transformadas em unidades (tokens), é importante que deixemos um lastro para avaliar o conjunto de uma notícia.
+De forma simplificada, o corpus é o texto corrido que será atribuido a um documento identificável, isto é, com um índice. É como se colocassemos uma chave que identificasse que qualquer trecho de uma notícia pertence a notícia 12.343, por exemplo. Isso é importante porque como as palavras ou expressões serão transformadas em unidades (tokens), assim que há um lastro para avaliar o conjunto de uma notícia.
 
 Exemplo da transformação em corpus:
 ![image](https://github.com/gustavo-westin/Risco_Imprensa/assets/113940727/0086204c-e03a-4fef-b64b-ef5ceaa54b81)
@@ -82,9 +81,8 @@ cleaned_tokens = [word for word in cleaned_tokens if word not in stop_words]
 Após as sucessivas etapas de limpeza, temos um corpus e tokens prontos para serem avaliados.
 
 ## Análise de Sentimento :heartbeat:
-A análise de sentimento é feita por um algoritmo "SentimentIntensityAnalyzer", pertencente ao pacote de aprendizado de máquina NLTK (Natural Language Toolkit). A documentação está disponível no site da biblioteca: https://www.nltk.org/howto/sentiment.html.
 
-De forma sucinta, o algoritmo utiliza cada documento (conjunto de tokens de uma mesma notícia) e associa um rótulo de sentimento, em um score entre -1 e 1, sendo -1 o mais negativo possível e 1 o mais positivo. Isso é feito em um procedimento que avalia de forma estatística a frequência de palavras e o conjunto de seus valores semânticos. Como se trata de um modelo de aprendizado de máquina, o processo é feito de forma iterada em todos os documentos, para identificar quais grupos de palavras são maais relevantes para compossição do significado e para a pontuação de cada documento. 
+De forma sucinta, o algoritmo escolhido utiliza cada documento (conjunto de tokens de uma mesma notícia) e associa um rótulo de sentimento, em um score entre -1 e 1, sendo -1 o mais negativo possível e 1 o mais positivo. Isso é feito em um procedimento que avalia de forma estatística a frequência de palavras e o conjunto de seus valores semânticos. O processo é feito de forma iterada em todos os documentos, para identificar quais grupos de palavras são maais relevantes para compossição do significado e para a pontuação de cada documento. 
 
 Veja na imagem abaixo como o processo é realizado e como cada documento recebe um valor:
 ![image](https://github.com/gustavo-westin/Risco_Imprensa/assets/113940727/c62c329b-8e5c-49b7-bfce-e385195b52f8)
@@ -110,9 +108,9 @@ print(f'Avalição dos títulos de notícias (12 meses):\n'
 
 
 ## LDA :microscope:
-Diferente da análise de sentimento, nesse método o interesse não é avaliar o valor da notícia, mas o que é a notícia. Isto é, identificar padrões textuais e agrupá-los. Isso é particularmente útil para identificar rapidamente quais são os principais temas e o que está sendo falado sobre eles, algo especialmente útil em um ambiente de análise de risco na imprensa. 
+Diferente da análise de sentimento, nesse método o interesse não é avaliar o valor da notícia, mas o que é a notícia. Isto é, identificar "aproximações textuais" que permitam agrupar documentos em um tópico latente. Isso é particularmente útil para identificar rapidamente quais são os principais temas e o que está sendo falado sobre eles, particularmente coerente com um ambiente dinâmico como a cobertura de imprensa. 
 
-Antes de entrar diretamente no LDA, é feito um trabalho de observação de recorrência, o que ajudará a validar o processo de aprendizado de máquina por comparação. Na recorrência identificamos, de forma simplificada, quais são as palavras com maior incidência no corpus textual. Isso ajuda a identificar, ainda que sem considerar a intricada relação semântica entre as palavras, o contexto geral do que está sendo dito.
+Para esse método é realizado um trabalho de observação de recorrência, o que ajudará a validar o processo estatístico. Na recorrência identificamos, de forma simplificada, quais são as palavras com maior incidência no corpus textual. Isso ajuda a identificar, ainda que sem considerar a intricada relação semântica entre as palavras, o contexto geral do que está sendo dito.
 
 A primeira forma de visualização é o gráfico simples de recorrência, que após alguns ajustes para eliminar palavrás óbvias, como Sabesp, tem esse formato:
 ```
@@ -159,7 +157,7 @@ plt.show();
 
 O LDA fará uma abordagem mais complexa, pois considerará a relação entre as palavras para associá-las em grupos de acordo com a probabilidade. De forma bastante simplificada, o LDA é um modelo matemático aplicado no aprendizado de máquina *não supervisionado* que busca revelar os tópicos subjacentes do conjunto de documentos, de acordo com um parâmetro fornecido pelo usuário (quantidade de tópicos desejados).
 
-O modelo matemático é bastante complexo, pois é uma técnica generativa, que envolve cruzamentos sucessivos de escolha aleatória de tópicos para uma composição aleatória de tokens de N documentos, sendo feita sucessivas vezes. O resultado é a probabilidade de uma palavra estar associada a um determinado tópico, dada sua recorrência, e a probabilidade dela estar próxima a outra palavra deste mesmo tópico.
+O modelo matemático é bastante complexo, pois envolve cruzamentos sucessivos. O resultado é a probabilidade de uma palavra estar associada a um determinado tópico, dada sua recorrência, e a probabilidade dela estar próxima a outra palavra deste mesmo tópico.
 
 Para o usuário, o resultado é a composição de tópicos, cujo significado é dado pelo contexto, de conhecimento do analista de negócios. Na imagem abaixo vemos o experimento para cinco tópicos, que nos revela, pelo contexto, que os tópicos principais se associam a:
 * mutirão de dívidas
@@ -169,6 +167,12 @@ Para o usuário, o resultado é a composição de tópicos, cujo significado é 
 * privatização da companhia
 
 ![image](https://github.com/gustavo-westin/Risco_Imprensa/assets/113940727/8950ffca-0048-49ed-9cf6-62e7e80d23e8)
+
+Esse documento é um panorama geral, o projeto em si pode ser visualizado de forma integral nos documentos que compôe o projeto:
+* monografia, com a base teórica, metodológica e a interpretação dos resultados
+* dois arquivos jupyter notebook, com os códigos e sua execução
+* arquivo do dashboard para visualização e interação com os tópicos latentes
+* referências teóricas
 
 
 
